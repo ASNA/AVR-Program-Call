@@ -1,0 +1,39 @@
+﻿Using System
+Using System.Text
+Using System.Diagnostics
+
+DclNamespace AVRGoodies
+
+BegClass Goodies Access(*Public)
+    DclDB pgmDB DBName("*PUBLIC/Cypress")
+
+    DclFld sw Type(StopWatch) New() 
+
+    DclDs CustDS Dim(200)   
+    DclDsFld CMName   Type(*Char) Len(40) 
+    DclDsFld CMCustNo Type(*Packed) Len(9,0)
+
+    BegFunc ProgramCallWithDS Access(*Public) Type(*Integer4) 
+        DclSrParm EndPgm Type(*Char) Len(1)
+
+        DclFld Counter Type(*Integer4) 
+
+        sw.Start()
+
+        Call "RPTEST/PgmCall" DB(pgmDB) 
+        DclParm CustDS 
+        DclParm EndPgm
+
+        Do FromVal(1) ToVal(200) Index(Counter) 
+            Occur CustDS NewIndex(Counter) 
+
+            If (CMCustNo = 0)
+                Leave
+            EndIf          
+        EndDo 
+
+        sw.Stop()
+
+        LeaveSr Counter - 1
+    EndFunc 
+EndClass

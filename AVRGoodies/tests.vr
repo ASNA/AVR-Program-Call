@@ -1,0 +1,35 @@
+﻿Using System
+Using System.Text
+Using Microsoft.VisualStudio.TestTools.UnitTesting
+
+DclNamespace AVRGoodies
+
+BegClass Tests Access(*Public) Attributes(TestClass())
+
+    BegSr TestPgmCallWithDS Attributes(TestMethod()) Access(*Public)
+        DclFld g Type(Goodies) New() 
+
+        DclFld Result   Type(*Integer4) 
+        DclFld Expected Type(*Integer4)
+
+        DclConst END_RPG_PGM        "1"
+        DclConst DO_NOT_END_RPG_PGM "0"
+
+        Expected = 15
+        Result = g.ProgramCallWithDS(DO_NOT_END_RPG_PGM)  
+        Assert.AreEqual(Expected, Result) 
+
+        Expected = 15
+        Result = g.ProgramCallWithDS(DO_NOT_END_RPG_PGM)
+        Assert.AreEqual(Expected, Result) 
+
+        Expected = 15
+        Result = g.ProgramCallWithDS(DO_NOT_END_RPG_PGM)
+        Assert.AreEqual(Expected, Result) 
+
+        Expected = 15
+        Result = g.ProgramCallWithDS(END_RPG_PGM)
+        Assert.AreEqual(Expected, Result) 
+   EndSr
+
+EndClass

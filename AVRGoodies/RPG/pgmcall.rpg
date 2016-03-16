@@ -1,0 +1,37 @@
+        Ctl-Opt Option(*srcstmt) Dftactgrp(*No) ActGrp('rptest');
+
+        Dcl-F CustomerL2 Disk(*ext) Usage(*Input) Keyed;
+
+        Dcl-Pi *N;
+            CustDs LikeRec(RCMMASTER:*Key) Dim(200);
+            EndPgm Char(1);
+        End-Pi;
+
+        // The free-format lines above take the place of the fixed-format
+        // lines below. Thanks to Chris Hayden at Pilot Corporation for the
+        // tip.
+        //      /end-free
+        //     c     *entry        plist
+        //     c                   parm                    CustDS
+        //     c                   parm                    EndPgm
+        //      /free
+
+        LoadCustDS();
+
+        If EndPgm = '1';
+            *InLR = *On;
+        EndIf;
+        Return;
+
+        Dcl-Proc LoadCustDS;
+            Dcl-S RowCount Packed(12:0);
+
+            RowCount = 0;
+
+            DoW (RowCount < 16);
+                RowCount = RowCount + 1;
+                Read CustomerL2;
+                CustDS(RowCount).CMCustNo = CMCustNo;
+                CustDS(RowCount).CMName = CMName;
+            EndDo;
+        End-Proc;
